@@ -2931,6 +2931,13 @@ class DistilBertForTokenClassification(metaclass=DummyObject):
         requires_backends(self, ["torch"])
 
 
+class DistilBertForMultiLabelClassification(metaclass=DummyObject):
+    _backends = ["torch"]
+
+    def __init__(self, *args, **kwargs):
+        requires_backends(self, ["torch"])
+
+
 class DistilBertModel(metaclass=DummyObject):
     _backends = ["torch"]
 

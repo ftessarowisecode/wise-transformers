@@ -382,6 +382,7 @@ _import_structure = {
         "DISTILBERT_PRETRAINED_CONFIG_ARCHIVE_MAP",
         "DistilBertConfig",
         "DistilBertTokenizer",
+        "DistilBertForMultiLabelConfig",
     ],
     "models.dit": [],
     "models.donut": [
@@ -2019,6 +2020,7 @@ else:
             "DistilBertForTokenClassification",
             "DistilBertModel",
             "DistilBertPreTrainedModel",
+            "DistilBertForMultiLabelClassification",
         ]
     )
     _import_structure["models.donut"].extend(
@@ -5075,6 +5077,7 @@ if TYPE_CHECKING:
     from .models.distilbert import (
         DISTILBERT_PRETRAINED_CONFIG_ARCHIVE_MAP,
         DistilBertConfig,
+        DistilBertForMultiLabelConfig,
         DistilBertTokenizer,
     )
     from .models.donut import (
@@ -6600,6 +6603,7 @@ if TYPE_CHECKING:
             DistilBertForTokenClassification,
             DistilBertModel,
             DistilBertPreTrainedModel,
+            DistilBertForMultiLabelClassification,
         )
         from .models.donut import (
             DONUT_SWIN_PRETRAINED_MODEL_ARCHIVE_LIST,

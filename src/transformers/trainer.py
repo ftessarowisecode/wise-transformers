@@ -3478,7 +3478,7 @@ class Trainer:
 
         if prediction_loss_only:
             return (loss, None, None)
-
+        # logger.info(f"logits: {logits}")
         logits = nested_detach(logits)
         if len(logits) == 1:
             logits = logits[0]

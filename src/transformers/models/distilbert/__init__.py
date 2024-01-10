@@ -29,6 +29,7 @@ _import_structure = {
         "DISTILBERT_PRETRAINED_CONFIG_ARCHIVE_MAP",
         "DistilBertConfig",
         "DistilBertOnnxConfig",
+
     ],
     "tokenization_distilbert": ["DistilBertTokenizer"],
 }
@@ -56,6 +57,7 @@ else:
         "DistilBertForTokenClassification",
         "DistilBertModel",
         "DistilBertPreTrainedModel",
+        "DistilBertForMultiLabelClassification"
     ]
 
 try:
@@ -124,6 +126,7 @@ if TYPE_CHECKING:
             DistilBertForTokenClassification,
             DistilBertModel,
             DistilBertPreTrainedModel,
+            DistilBertForMultiLabelClassification
         )
 
     try:
