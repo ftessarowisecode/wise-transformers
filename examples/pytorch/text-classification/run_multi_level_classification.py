@@ -523,9 +523,8 @@ def main():
     if data_args.label_column_name_l2 is not None and data_args.label_column_name_l2 != "label_l2":
         for key in raw_datasets.keys():
             # raw_datasets[key] = raw_datasets[key].rename_column(data_args.label_column_name_l2, "label_l2")
-            # apply transform
+            # apply transform to cat2
             raw_datasets[key] = raw_datasets[key].map(lambda example: {"label_l2": example["cat2"].split(">> ")[-1]}, remove_columns=["cat2"])
-            #["label_l2"] = [item.split(">> ")[1] for item in raw_datasets[key]["label_l2"]]
 
     # Trying to have good defaults here, don't hesitate to tweak to your needs.
 
@@ -785,6 +784,7 @@ def main():
     #     if len(result) > 1:
     #         result["combined_score"] = np.mean(list(result.values())).item()
     #     return result
+                
     metric1 = evaluate.load("precision")
     metric2 = evaluate.load("recall")
     metric3 = evaluate.load("f1")
@@ -793,12 +793,12 @@ def main():
     def compute_metrics(eval_pred: EvalPrediction) -> dict:
         logits, labels = eval_pred
         # convert labels format
-        labels = np.transpose(labels)
+        labels_transposed = np.transpose(labels)
         assert len(logits) == 2
         result_dict = {}
         argmax_predictions = []
         # compute for each level metrics
-        for i, (level_logits, level_labels) in enumerate(zip(logits, labels)):
+        for i, (level_logits, level_labels) in enumerate(zip(logits, labels_transposed)):
             predictions = np.argmax(level_logits, axis=-1)
             argmax_predictions.append(predictions)
 
@@ -810,8 +810,17 @@ def main():
             result_dict.update({f"f1_L{i}": f1})
             result_dict.update({f"recall_L{i}": recall})
             result_dict.update({f"precision_L{i}": precision})
+        
+        predictions = np.array(argmax_predictions).transpose().tolist()
+        predictions = ['_'.join(str(v) for v in elem) for elem in predictions]
+        labels = ['_'.join(str(v) for v in elem) for elem in labels.tolist()]
+        
+        precision = metric1.compute(predictions=predictions, references=labels, average="macro")["precision"]
+        recall = metric2.compute(predictions=predictions, references=labels, average="macro")["recall"]
+        f1 = metric3.compute(predictions=predictions, references=labels, average="macro")["f1"]
+        accuracy = metric.compute(predictions=predictions, references=labels)["accuracy"]
         # accuracy, precision, recall, f1 = compute_global_metrics(argmax_predictions, labels)
-        accuracy, precision, recall, f1 = 0, 0, 0, 0
+        # accuracy, precision, recall, f1 = 0, 0, 0, 0
         result_dict.update({f"accuracy_L{i}": accuracy})
         result_dict.update({f"f1": f1})
         result_dict.update({f"recall": recall})
