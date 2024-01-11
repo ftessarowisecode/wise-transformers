@@ -361,7 +361,7 @@ class PretrainedConfig(PushToHubMixin):
 
         # regression / multi-label classification
         self.problem_type = kwargs.pop("problem_type", None)
-        allowed_problem_types = ("regression", "single_label_classification", "multi_label_classification")
+        allowed_problem_types = ("regression", "single_label_classification", "multi_label_classification", "multi_taxonomy_classification")
         if self.problem_type is not None and self.problem_type not in allowed_problem_types:
             raise ValueError(
                 f"The config parameter `problem_type` was not understood: received {self.problem_type} "
