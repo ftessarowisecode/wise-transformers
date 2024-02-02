@@ -51,7 +51,7 @@ print(f"taxonomy dict: {taxonomy_dict}")
 
 # load model
 print("Start loading model and tokenizer")
-model_name_or_path = "/Users/filippotessaro/models/wisecat/exp_MLMdoordash30ep_pino_data_clean_10jan_multilevel_ep30/checkpoint-57148"
+model_name_or_path = "/Users/filippotessaro/models/wisecat/exp_MLMdoordash30ep_pino_data_clean_10jan_multilevel_ep30"
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
 model = DistilBertForMultiLabelClassification.from_pretrained(model_name_or_path)
 

@@ -48,7 +48,7 @@ from transformers.utils import check_min_version, send_example_telemetry
 from transformers.utils.versions import require_version
 
 from transformers.models.distilbert.configuration_distilbert import DistilBertForMultiLabelConfig
-from transformers.models.distilbert.modeling_distilbert_multilabel import DistilBertForMultiLabelClassification
+from transformers.models.distilbert.modeling_distilbert_multilabel import DistilBertForMultiLabelClassificationV2
 from transformers import DistilBertModel
 
 
@@ -598,7 +598,7 @@ def main():
         trust_remote_code=model_args.trust_remote_code,
     )
    
-    model = DistilBertForMultiLabelClassification(config=config)
+    model = DistilBertForMultiLabelClassificationV2(config=config)
     # load pretrained distilbert model
     logger.info("Setting pre-trained transformer layers")
     model.bert = DistilBertModel.from_pretrained("distilbert-base-uncased")

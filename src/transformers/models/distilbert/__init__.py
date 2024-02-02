@@ -126,7 +126,8 @@ if TYPE_CHECKING:
             DistilBertForTokenClassification,
             DistilBertModel,
             DistilBertPreTrainedModel,
-            DistilBertForMultiLabelClassification
+            DistilBertForMultiLabelClassification,
+            DistilBertForMultiLabelClassificationV2
         )
 
     try:
