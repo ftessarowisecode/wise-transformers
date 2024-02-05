@@ -229,11 +229,12 @@ class DistilBertForMultiLabelClassificationV2(DistilBertPreTrainedModel):
         # Define separate classifiers for each level of the taxonomy
         self.level_classifiers = nn.ModuleList([
             nn.Sequential(
-                nn.Linear(config.dim, config.dim),
+                # linear layer with previous out concatenated with bert output
+                nn.Linear(config.dim if idx == 0 else config.dim + config.num_classes_per_level[idx-1], config.dim),
                 nn.ReLU(),
                 nn.Linear(config.dim, num_classes)
             )
-            for num_classes in config.num_classes_per_level
+            for idx, num_classes in enumerate(config.num_classes_per_level)
         ])
         self.dropout = nn.Dropout(config.seq_classif_dropout)
 
@@ -303,7 +304,12 @@ class DistilBertForMultiLabelClassificationV2(DistilBertPreTrainedModel):
         logits_list = []
         for classifier in self.level_classifiers:
             # Apply classifier to the output of DistilBERT
-            logits = classifier(pooled_output)  # Linear layer for each level
+            if len(logits_list) == 0:
+                logits = classifier(pooled_output)  # Linear layer for each level
+            else:
+                # take last output layer and concat with bert features
+                x = torch.cat((pooled_output, torch.relu(logits_list[-1])), dim=1)
+                logits = classifier(x)
             logits_list.append(logits)
         
         loss = None
